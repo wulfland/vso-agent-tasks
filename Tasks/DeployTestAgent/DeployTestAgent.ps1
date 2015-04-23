@@ -4,8 +4,6 @@ param(
     [string]$runAsProcess,
     [string]$machineUserName,
     [string]$machinePassword,
-    [string]$alternateCredsUserName,
-    [string]$alternateCredsPassword,
     [string]$agentLocation,
     [string]$updateTestAgent
 )
@@ -54,6 +52,6 @@ Write-Verbose "Getting the access token object"
 $accessToken = Get-PersonalAccessToken -TaskContext $distributedTaskContext
 
 Write-Verbose "Calling Invoke-DeployTestAgent"
-Invoke-DeployTestAgent -MachineNames $testMachines -UserName $machineUserName -Password $machinePassword -PowerShellPort 5985 -EnvironmentName $environment -RunAsProcess $runAsProcess -LogonAutomatically $logonAutomatically -DisableScreenSaver $disableScreenSaver -AlternateCredUserName $alternateCredsUserName -AlternateCredPassword $alternateCredsPassword -AgentLocation $agentLocation -UpdateTestAgent $updateTestAgent -InstallAgentScriptLocation $installAgentScriptLocation -ConfigureTestAgentScriptLocation $configureTestAgentScriptLocation -CheckAgentInstallationScriptLocation $checkAgentInstallationScriptLocation -Connection $connection -PersonalAccessToken $accessToken
+Invoke-DeployTestAgent -MachineNames $testMachines -UserName $machineUserName -Password $machinePassword -PowerShellPort 5985 -EnvironmentName $environment -RunAsProcess $runAsProcess -LogonAutomatically $logonAutomatically -DisableScreenSaver $disableScreenSaver -AgentLocation $agentLocation -UpdateTestAgent $updateTestAgent -InstallAgentScriptLocation $installAgentScriptLocation -ConfigureTestAgentScriptLocation $configureTestAgentScriptLocation -CheckAgentInstallationScriptLocation $checkAgentInstallationScriptLocation -Connection $connection -PersonalAccessToken $accessToken
 
 Write-Verbose "Leaving script DeployTestAgent.ps1"
