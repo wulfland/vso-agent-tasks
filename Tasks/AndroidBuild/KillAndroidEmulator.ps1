@@ -7,19 +7,19 @@ Write-Verbose "emulatorName = $emulatorName"
 
 if ($env:ANDROID_HOME -eq $null)
 {
-    throw 'Environment variable not set: ANDROID_HOME'
+    throw (Get-LocalizedString -Key 'Environment variable not set: {0}' -ArgumentList 'ANDROID_HOME')
 }
 
 $adbexe = $env:ANDROID_HOME + "\platform-tools\adb.exe"
 if (!(Test-Path -Path $adbexe))
 {
-    throw "File not found: $adbexe"
+    throw (Get-LocalizedString -Key 'File not found: {0}' -ArgumentList $adbexe)
 }
 
 $androidbat = $env:ANDROID_HOME + "\tools\android.bat"
 if (!(Test-Path -Path $androidbat))
 {
-    throw "File not found: $androidbat"
+    throw (Get-LocalizedString -Key 'File not found: {0}' -ArgumentList $androidbat)
 }
 
 # Delete emulator device.  Stop-Process is used because Wait-Job or Stop-Job hangs.
