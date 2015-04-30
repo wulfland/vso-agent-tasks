@@ -30,30 +30,30 @@ $parameters = ""
 
 if (!$teamApiKey) 
 {
-    throw "Must specify a Team API key."
+    throw (Get-LocalizedString -Key "Must specify a Team API key.")
 }
 
 if (!$user)
 {
-    throw "Must specify a user for this test run."
+    throw (Get-LocalizedString -Key "Must specify a user for this test run.")
 }
 $parameters = "$parameters --user $user"
 
 if (!$devices)
 {
-    throw "Must specify devices to run the tests on."
+    throw (Get-LocalizedString -Key "Must specify devices to run the tests on.")
 }
 $parameters = "$parameters --devices $devices"
 
 if (!$series) 
 {
-    throw "Must specify the series."
+    throw (Get-LocalizedString -Key "Must specify the series.")
 }
 $parameters = "$parameters --series `"$series`""
 
 if (!$locale) 
 {
-    throw "Must specify the system language."
+    throw (Get-LocalizedString -Key "Must specify the system language.")
 }
 $parameters = "$parameters --locale `"$locale`""
 
@@ -73,13 +73,13 @@ else
 
 if (!$appFiles)
 {
-    throw "No apps with search pattern '$app' was found."
+    throw (Get-LocalizedString -Key "No apps with search pattern '{0}' were found." -ArgumentList $app)
 }
 
 # Xamarin.UITest specific options
 if (!$testDir -or !(Test-Path -Path $testDir -PathType Container))
 {
-    throw "Test assembly directory does not exist or is not a folder."
+    throw (Get-LocalizedString -Key "Test assembly directory does not exist or is not a folder.")
 }
 $parameters = "$parameters --assembly-dir $testDir"
 
@@ -91,7 +91,7 @@ if ("none" -ne $parallelization)
 # Ensure that $testCloudLocation specifies test-cloud.exe
 if (!$testCloudLocation.EndsWith("test-cloud.exe", "OrdinalIgnoreCase"))
 {
-    throw "test-cloud.exe location must end with 'test-cloud.exe'."
+    throw (Get-LocalizedString -Key "test-cloud.exe location must end with 'test-cloud.exe'.")
 }
 
 # locate the test-cloud tool, it is part of the Xamarin.UITest NuGet package
@@ -120,7 +120,7 @@ else
 
 if (!$testCloud) 
 {
-    throw "Could not find test-cloud.exe.  If you don't have Xamarin Test Cloud command line tools installed, install the NuGet package Xamarin.UITest."  
+    throw (Get-LocalizedString -Key "Could not find test-cloud.exe.  If you don't have Xamarin Test Cloud command line tools installed, install the NuGet package Xamarin.UITest.")
 }
 
 if ($optionalArgs)
@@ -131,7 +131,7 @@ if ($optionalArgs)
 foreach ($ap in $appFiles)
 {
     $argument = "submit $ap $teamApiKey $parameters"
-    Write-Host "Submit $ap to Xamarin Test Cloud."
+    Write-Host (Get-LocalizedString -Key "Submit {0} to Xamarin Test Cloud." -ArgumentList $ap)
     Invoke-Tool -Path $testCloud -Arguments $argument
 }
 

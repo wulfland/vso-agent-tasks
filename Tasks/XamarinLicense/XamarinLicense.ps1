@@ -6,31 +6,32 @@
     [string]$timeout 
 )
 
+
 Write-Verbose "Entering script XamarinLicense.ps1"
 Write-Verbose "action = $action"
 Write-Verbose "email = $email"
 Write-Verbose "activateAndroid = $activateAndroid"
 Write-Verbose "timeout = $timeout"
 
-$activateAndroidLicense = Convert-String $activateAndroid Boolean
-Write-Verbose "activateAndroid (converted) = $activateAndroidLicense"
-
 # Import the Task.Common dll that has all the cmdlets we need for Build
 import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
+$activateAndroidLicense = Convert-String $activateAndroid Boolean
+Write-Verbose "activateAndroid (converted) = $activateAndroidLicense"
+
 if (!$action)
 {
-    throw "Action parameter not set on script"
+    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'Action')
 }
 
 if (!$email)
 {
-    throw "Email parameter not set on script"
+    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'Email')
 }
 
 if (!$password)
 {
-    throw "Password parameter not set on script"
+    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'Password')
 }
 
 $timeoutInSec = $null

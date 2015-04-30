@@ -24,7 +24,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 if (!$project)
 {
-    throw "project parameter not set on script"
+    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'project')
 }
 
 # check for project pattern
@@ -43,7 +43,7 @@ else
 
 if (!$projectFiles)
 {
-    throw "No project with search pattern '$project' was found."
+    throw (Get-LocalizedString -Key "No project with search pattern '{0}' was found." -ArgumentList $project)
 }
 
 # construct build parameters
@@ -78,7 +78,7 @@ if ($jdkVersion -and $jdkVersion -ne "default")
     $jdkPath = Get-JavaDevelopmentKitPath -Version $jdkVersion -Arch $jdkArchitecture
     if (!$jdkPath) 
     {
-        throw "Could not find JDK $jdkVersion $jdkArchitecture, please make sure the selected JDK is installed properly"
+        throw (Get-LocalizedString -Key "Could not find JDK {0} {1}, please make sure the selected JDK is installed properly" -ArgumentList $jdkVersion, $jdkArchitecture)
     }
 
     Write-Verbose "adding JavaSdkDirectory: $jdkPath"

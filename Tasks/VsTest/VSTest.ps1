@@ -20,7 +20,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.TestResults"
 
 if (!$testAssembly)
 {
-    throw "testAssembly parameter not set on script"
+    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'testAssembly')
 }
 
 # check for solution pattern

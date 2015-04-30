@@ -18,7 +18,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 # Verify wrapperScript is set and is not a container
 if(!$wrapperScript -or !(Test-Path -Path $wrapperScript -PathType Leaf)) 
 {
-    throw "Please specify the Gradle wrapper script."
+    throw (Get-LocalizedString -Key "Please specify the Gradle wrapper script.")
 }
 
 # Find working directory. cwd is optional, we use directory of wrapper as working directory if not set.
@@ -36,10 +36,10 @@ if($jdkVersion -and $jdkVersion -ne "default")
     $jdkPath = Get-JavaDevelopmentKitPath -Version $jdkVersion -Arch $jdkArchitecture
     if (!$jdkPath) 
     {
-        throw "Could not find JDK $jdkVersion $jdkArchitecture, please make sure the selected JDK is installed properly"
+        throw (Get-LocalizedString -Key "Could not find JDK {0} {1}, please make sure the selected JDK is installed properly" -ArgumentList $jdkVersion, $jdkArchitecture)
     }
 
-    Write-Host "Setting JAVA_HOME to $jdkPath"
+    Write-Host (Get-LocalizedString -Key "Setting {0} to {1}" -ArgumentList 'JAVA_HOME', $jdkPath)
     $env:JAVA_HOME = $jdkPath
     Write-Verbose "JAVA_HOME set to $env:JAVA_HOME"
 }

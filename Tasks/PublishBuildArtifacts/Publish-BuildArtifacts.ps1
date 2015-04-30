@@ -14,10 +14,10 @@ param
     $TargetPath
 )
 
-Write-Host "Entering script Publish-BuildArtifacts.ps1"
-Write-Host "Contents = $Contents"
-Write-Host "ArtifactName = $ArtifactName"
-Write-Host "ArtifactType = $ArtifactType"
+Write-Verbose "Entering script Publish-BuildArtifacts.ps1"
+Write-Verbose "Contents = $Contents"
+Write-Verbose "ArtifactName = $ArtifactName"
+Write-Verbose "ArtifactType = $ArtifactType"
 
 # Import the Task.Common dll that has all the cmdlets we need for Build
 import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
@@ -28,7 +28,7 @@ $teamProjectId = Get-Variable $distributedTaskContext "system.teamProjectId"
 $stagingFolder = Get-Variable $distributedTaskContext "build.artifactstagingdirectory"
 
 # gather files into staging folder
-Write-Host "Preparing artifact content in staging folder $stagingFolder..."
+Write-Host (Get-LocalizedString -Key "Preparing artifact content in staging folder {0}..." -ArgumentList $stagingFolder)
 $artifactStagingFolder = Prepare-BuildArtifact $distributedTaskContext $agentRoot $stagingFolder $ArtifactName $Contents
 
 # copy staging folder to artifact location
@@ -40,14 +40,14 @@ elseif ($ArtifactType -ieq "filepath")
 {
     if ((Test-Path $TargetPath) -eq 0)
     {
-        Write-Host "Creating target path $TargetPath..."
+        Write-Host (Get-LocalizedString -Key "Creating target path {0}..." -ArgumentList $TargetPath)
         MD $TargetPath
     }
 
-    Write-Host "Copying artifact content to $TargetPath..."
+    Write-Host (Get-LocalizedString -Key "Copying artifact content to {0}..." -ArgumentList $TargetPath)
     Copy-Item $artifactStagingFolder $TargetPath -Recurse -Force
 
     Write-Host "##vso[artifact.associate artifactname=$ArtifactName;artifactlocation=$TargetPath;]"
 }
 
-Write-Host "Leaving script Publish-BuildArtifacts.ps1"
+Write-Verbose "Leaving script Publish-BuildArtifacts.ps1"
