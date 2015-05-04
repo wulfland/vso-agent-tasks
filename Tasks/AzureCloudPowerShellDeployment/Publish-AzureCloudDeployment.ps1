@@ -99,7 +99,7 @@ function Get-DiagnosticsExtensions($storageAccount, $extensionsPath)
     }
     else
     {
-        Write-Host (Get-LocalizedString -Key "Applying any configured diagnostics extensions...")
+        Write-Host (Get-LocalizedString -Key "Applying any configured diagnostics extensions.")
 
         Write-Verbose "Getting the primary AzureStorageKey..."
         $primaryStorageKey = (Get-AzureStorageKey -StorageAccountName "$storageAccount").Primary
@@ -138,7 +138,7 @@ function Get-DiagnosticsExtensions($storageAccount, $extensionsPath)
                         }
                         else
                         {
-                            Write-Warning (Get-LocalizedString -Key "Could not get the primary storage key for the PublicConfig storage account '{0}'.  Unable to apply any diagnostics extensions." -ArgumentList $publicConfigStorageAccountName)
+                            Write-Warning (Get-LocalizedString -Key "Could not get the primary storage key for the public config storage account '{0}'.  Unable to apply any diagnostics extensions." -ArgumentList $publicConfigStorageAccountName)
                             return
                         }
                     }

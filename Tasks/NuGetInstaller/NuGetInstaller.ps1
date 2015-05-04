@@ -19,7 +19,7 @@ import-module Microsoft.TeamFoundation.DistributedTask.Task.Common
 
 if(!$solution)
 {
-    throw (Get-LocalizedString -Key "{0} parameter must be set" -ArgumentList 'solution')
+    throw (Get-LocalizedString -Key "Solution parameter must be set")
 }
 
 $b_excludeVersion = Convert-String $excludeVersion Boolean

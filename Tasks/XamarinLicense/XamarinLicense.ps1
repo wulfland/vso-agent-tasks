@@ -6,7 +6,6 @@
     [string]$timeout 
 )
 
-
 Write-Verbose "Entering script XamarinLicense.ps1"
 Write-Verbose "action = $action"
 Write-Verbose "email = $email"
@@ -21,17 +20,17 @@ Write-Verbose "activateAndroid (converted) = $activateAndroidLicense"
 
 if (!$action)
 {
-    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'Action')
+    throw (Get-LocalizedString -Key "Action parameter not set on script")
 }
 
 if (!$email)
 {
-    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'Email')
+    throw (Get-LocalizedString -Key "Email parameter not set on script")
 }
 
 if (!$password)
 {
-    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'Password')
+    throw (Get-LocalizedString -Key "Password parameter not set on script")
 }
 
 $timeoutInSec = $null

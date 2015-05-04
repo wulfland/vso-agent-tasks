@@ -13,12 +13,12 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 if(!$testRunner)
 {
-    throw (Get-LocalizedString -Key "{0} parameter has to be specified" -ArgumentList 'testRunner')
+    throw (Get-LocalizedString -Key "Test runner parameter has to be specified")
 }
 
 if (!$testResultsFiles)
 {
-    throw (Get-LocalizedString -Key "{0} parameter has to be specified" -ArgumentList 'testResultsFiles')
+    throw (Get-LocalizedString -Key "Test results files parameter has to be specified")
 }
 
 # check for pattern in testResultsFiles

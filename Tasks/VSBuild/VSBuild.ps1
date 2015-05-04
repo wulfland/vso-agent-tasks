@@ -31,7 +31,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 if (!$solution)
 {
-    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'solution')
+    throw (Get-LocalizedString -Key "Solution parameter not set on script")
 }
 
 $nugetRestore = Convert-String $restoreNugetPackages Boolean

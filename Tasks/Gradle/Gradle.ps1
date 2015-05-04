@@ -39,7 +39,7 @@ if($jdkVersion -and $jdkVersion -ne "default")
         throw (Get-LocalizedString -Key "Could not find JDK {0} {1}, please make sure the selected JDK is installed properly" -ArgumentList $jdkVersion, $jdkArchitecture)
     }
 
-    Write-Host (Get-LocalizedString -Key "Setting {0} to {1}" -ArgumentList 'JAVA_HOME', $jdkPath)
+    Write-Verbose "Setting JAVA_HOME to $jdkPath"
     $env:JAVA_HOME = $jdkPath
     Write-Verbose "JAVA_HOME set to $env:JAVA_HOME"
 }

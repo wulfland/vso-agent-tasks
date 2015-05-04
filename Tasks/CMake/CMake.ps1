@@ -12,7 +12,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 if(!$cwd)
 {
-    throw (Get-LocalizedString -Key "{0} parameter is not set" -ArgumentList 'cwd')
+    throw (Get-LocalizedString -Key "Current working directory parameter is not set")
 }
 
 if(!(Test-Path $cwd -PathType Container))

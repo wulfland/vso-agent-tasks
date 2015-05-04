@@ -24,7 +24,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 if (!$project)
 {
-    throw (Get-LocalizedString -Key "{0} parameter not set on script" -ArgumentList 'project')
+    throw (Get-LocalizedString -Key "Project parameter not set on script")
 }
 
 # check for project pattern

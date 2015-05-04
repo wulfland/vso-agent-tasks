@@ -28,7 +28,7 @@ $teamProjectId = Get-Variable $distributedTaskContext "system.teamProjectId"
 $stagingFolder = Get-Variable $distributedTaskContext "build.artifactstagingdirectory"
 
 # gather files into staging folder
-Write-Host (Get-LocalizedString -Key "Preparing artifact content in staging folder {0}..." -ArgumentList $stagingFolder)
+Write-Host (Get-LocalizedString -Key "Preparing artifact content in staging folder {0}" -ArgumentList $stagingFolder)
 $artifactStagingFolder = Prepare-BuildArtifact $distributedTaskContext $agentRoot $stagingFolder $ArtifactName $Contents
 
 # copy staging folder to artifact location
@@ -40,11 +40,11 @@ elseif ($ArtifactType -ieq "filepath")
 {
     if ((Test-Path $TargetPath) -eq 0)
     {
-        Write-Host (Get-LocalizedString -Key "Creating target path {0}..." -ArgumentList $TargetPath)
+        Write-Host (Get-LocalizedString -Key "Creating target path {0}" -ArgumentList $TargetPath)
         MD $TargetPath
     }
 
-    Write-Host (Get-LocalizedString -Key "Copying artifact content to {0}..." -ArgumentList $TargetPath)
+    Write-Host (Get-LocalizedString -Key "Copying artifact content to {0}" -ArgumentList $TargetPath)
     Copy-Item $artifactStagingFolder $TargetPath -Recurse -Force
 
     Write-Host "##vso[artifact.associate artifactname=$ArtifactName;artifactlocation=$TargetPath;]"
