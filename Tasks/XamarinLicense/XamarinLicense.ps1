@@ -12,25 +12,25 @@ Write-Verbose "email = $email"
 Write-Verbose "activateAndroid = $activateAndroid"
 Write-Verbose "timeout = $timeout"
 
-$activateAndroidLicense = Convert-String $activateAndroid Boolean
-Write-Verbose "activateAndroid (converted) = $activateAndroidLicense"
-
 # Import the Task.Common dll that has all the cmdlets we need for Build
 import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
+$activateAndroidLicense = Convert-String $activateAndroid Boolean
+Write-Verbose "activateAndroid (converted) = $activateAndroidLicense"
+
 if (!$action)
 {
-    throw "Action parameter not set on script"
+    throw (Get-LocalizedString -Key "Action parameter not set on script")
 }
 
 if (!$email)
 {
-    throw "Email parameter not set on script"
+    throw (Get-LocalizedString -Key "Email parameter not set on script")
 }
 
 if (!$password)
 {
-    throw "Password parameter not set on script"
+    throw (Get-LocalizedString -Key "Password parameter not set on script")
 }
 
 $timeoutInSec = $null

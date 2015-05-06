@@ -24,7 +24,7 @@ import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
 if (!$project)
 {
-    throw "project parameter not set on script"
+    throw (Get-LocalizedString -Key "Project parameter not set on script")
 }
 
 # check for project pattern
@@ -43,8 +43,11 @@ else
 
 if (!$projectFiles)
 {
-    throw "No project with search pattern '$project' was found."
+    throw (Get-LocalizedString -Key "No project with search pattern '{0}' was found." -ArgumentList $project)
 }
+
+# construct build parameters
+$timeline = Start-Timeline -Context $distributedTaskContext
 
 $args = $msbuildArguments;
 
@@ -75,7 +78,7 @@ if ($jdkVersion -and $jdkVersion -ne "default")
     $jdkPath = Get-JavaDevelopmentKitPath -Version $jdkVersion -Arch $jdkArchitecture
     if (!$jdkPath) 
     {
-        throw "Could not find JDK $jdkVersion $jdkArchitecture, please make sure the selected JDK is installed properly"
+        throw (Get-LocalizedString -Key "Could not find JDK {0} {1}, please make sure the selected JDK is installed properly" -ArgumentList $jdkVersion, $jdkArchitecture)
     }
 
     Write-Verbose "adding JavaSdkDirectory: $jdkPath"
@@ -87,7 +90,7 @@ Write-Verbose "args = $args"
 # build each project file
 foreach ($pf in $projectFiles)
 {
-    Invoke-MSBuild $pf -LogFile "$pf.log" -ToolLocation $msBuildLocation -CommandLineArgs $args
+    Invoke-MSBuild $pf -Timeline $timeline -LogFile "$pf.log" -ToolLocation $msBuildLocation -CommandLineArgs $args
 }
 
 Write-Verbose "Leaving script XamarinAndroid.ps1"
