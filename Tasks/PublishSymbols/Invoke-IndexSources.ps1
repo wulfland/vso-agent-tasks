@@ -367,7 +367,6 @@ try {
             break
         }
         'TfsVersionControl' {
-            # TODO: WHERE DOES THE distributedTaskContext VARIABLE COME FROM? GLOBAL SCOPE? AGENT SETS THIS?
             $serviceEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $env:BUILD_REPOSITORY_NAME
             [hashtable]$splat = @{
                 'Name' = 'Get-TfsClientCredentials'
@@ -394,11 +393,22 @@ try {
             $versionControlServer = $tfsTeamProjectCollection.GetService([Microsoft.TeamFoundation.VersionControl.Client.VersionControlServer])
             $workspace = $versionControlServer.TryGetWorkspace($sourcesRootPath)
             if (!$workspace) {
-                # TODO: SHOULDN'T THIS BE AN ERROR? THIS SHOULD NEVER HAPPEN.
+                # This should never happen.
                 Write-Warning (Get-LocalizedString -Key 'Unable to determine workspace from source folder ''{0}''.' -ArgumentList $sourcesRootPath)
+                Write-Warning (Get-LocalizedString -Key 'Unable to index sources.')
                 return
             }
 
+            # Not able to repro this non-durable vs durable discrepancy. However, leaving the
+            # code as is. It seems that either A) this was fixed at a higher level or B) need
+            # better repro description in the comments.
+            #
+            # If there is a legitimate issue then it needs to be fixed for the TfsGit scenario.
+            # Leaving the TfsGit provider logic as is, as it doesn't contain the durable logic
+            # already and can't figure out how to repro a valid requirement for it.
+            #
+            # ORIGINAL COMMENTS:
+            #
             # When the build service runs on the same box as the AT, we use localhost
             # to connect to the AT.  This is not appropriate for storing inside of a PDB that will
             # be used on another box, so we have to look up a more durable URL.
@@ -415,10 +425,18 @@ try {
                 $publicCollectionUrl = $publicCollectionUrl.Substring(
                     0,
                     $publicCollectionUrl.Length - [Microsoft.TeamFoundation.Framework.Common.LocationServiceConstants]::CollectionLocationServiceRelativePath.Length)
+                Write-Verbose "Durable collection URL: $publicCollectionUrl"
             } else {
-                # TODO: SHOULD THIS REVERT TO ENV VAR?
+                # Unclear how to repro this case where the durable collection URL is resolved
+                # in an unexpected format. This was existing logic so just added a warning in
+                # case it somehow happens. If there is clear repro steps, then a description
+                # should be documented here as it's otherwise unclear.
+                Write-Warning (Get-LocalizedString -Key "Resolved durable collection URL is in an unexpected format. Sources will be indexed with the following collection URL which may be incorrect: {0}", -ArgumentList $publicCollectionUrl)
             }
 
+            # Trace the default collection URL so we can try and figure out what's going on
+            # if the durable URL resolves incorrectly.
+            Write-Verbose "Job context collection URL: $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"
             break
         }
         default {
@@ -452,7 +470,6 @@ try {
         switch ($provider) {
             'TfsGit' {
                 [hashtable]$splat = @{
-                    # TODO: WHY DOESN'T THIS USE THE "PUBLIC COLLECTION URL" LIKE TFVC?
                     'CollectionUrl' = $collectionUrl
                     'TeamProjectId' = $teamProjectId
                     'RepoId' = $repoId
