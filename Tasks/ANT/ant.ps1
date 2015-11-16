@@ -178,26 +178,31 @@ else
 # check if code coverage has been enabled
 if($isCoverageEnabled)
 {
-	
    # run report code coverage task which generates code coverage reports.
    $reportsGenerationFailed = $false
    Write-Verbose "Collecting code coverage reports" -Verbose
    try
    {
-	if(Test-Path $reportBuildFile)
-	{
-		# This will handle compat between S91 and S92
-		Invoke-Ant -AntBuildFile $reportBuildFile -Targets $CCReportTask
-	}
-	else
-	{
-		Invoke-Ant -AntBuildFile $antBuildFile -Targets $CCReportTask
-	}
-   }
-   catch
-   {
-	$reportsGenerationFailed = $true
-   }
+        if ($codeCoverageTool.equals("Cobertura"))
+        {
+            Invoke-Ant -AntBuildFile $antBuildFile -Targets $CCReportTask 
+        }
+        else
+        {
+            if(Test-Path $reportBuildFile)
+            {
+                Invoke-Ant -AntBuildFile $reportBuildFile -Targets $CCReportTask
+            }
+            else
+            {
+                Invoke-Ant -AntBuildFile $antBuildFile -Targets $CCReportTask
+            }
+        }
+    }
+    catch
+    {
+    	$reportsGenerationFailed = $true
+    }
    
 	
 	if(-not $reportsGenerationFailed -and (Test-Path $summaryFile))
