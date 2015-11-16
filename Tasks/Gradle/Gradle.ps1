@@ -22,7 +22,7 @@ Write-Verbose "options = $options"
 Write-Verbose "tasks = $tasks"
 Write-Verbose "publishJUnitResults = $publishJUnitResults"
 Write-Verbose "testResultsFiles = $testResultsFiles"
-$isCoverageEnabled = !$codeCoverageTool.equals("None")
+$isCoverageEnabled = !($codeCoverageTool -eq "None")
 if($isCoverageEnabled)
 {
     Write-Verbose "codeCoverageTool = $codeCoverageTool" 
@@ -95,21 +95,39 @@ $wrapperDirectory = Split-Path $wrapperScript -Parent
 $reportDirectoryName = [guid]::NewGuid()
 $reportDirectory = Join-Path $buildRootPath $reportDirectoryName
 
-$summaryFileName = "summary.xml"
-$summaryFile = Join-Path $buildRootPath $reportDirectoryName 
-$summaryFile = Join-Path $summaryFile $summaryFileName 
-$buildFile = Join-Path $buildRootPath "build.gradle"
-
 # check if project is multi module gradle build or not
 $subprojects = Invoke-BatchScript -Path $wrapperScript -Arguments 'properties' -WorkingFolder $buildRootPath | Select-String '^subprojects: (.*)'|ForEach-Object {$_.Matches[0].Groups[1].Value}
 Write-Verbose "subprojects: $subprojects"
 $singlemodule = [string]::IsNullOrEmpty($subprojects) -or $subprojects -eq '[]'
 
+if($codeCoverageTool -eq "JaCoCo")
+{
+    $summaryFileName = "summary.xml"
+
+    if($singlemodule)
+    {
+        $reportingTaskName = "jacocoTestReport"
+    }
+    else
+    {
+        $reportingTaskName = "jacocoRootReport"
+    }
+}
+elseif($codeCoverageTool -eq "Cobertura")
+{
+    $summaryFileName = "coverage.xml"
+    $reportingTaskName = "cobertura"
+}
+
+$summaryFile = Join-Path $buildRootPath $reportDirectoryName 
+$summaryFile = Join-Path $summaryFile $summaryFileName 
+$buildFile = Join-Path $buildRootPath "build.gradle"
+
 # check if code coverage has been enabled
 if($isCoverageEnabled)
 {
    # Enable code coverage in build file
-   Enable-CodeCoverage -BuildTool 'Gradle' -BuildFile $buildFile -CodeCoverageTool $codeCoverageTool -ClassFilter $classFilter -ClassFilesDirectories $classFilesDirectories -SummaryFile $summaryFileName -ReportDirectory $reportDirectoryName -IsMultiModule !$singlemodule -ErrorAction Stop
+   Enable-CodeCoverage -BuildTool 'Gradle' -BuildFile $buildFile -CodeCoverageTool $codeCoverageTool -ClassFilter $classFilter -ClassFilesDirectories $classFilesDirectories -SummaryFile $summaryFileName -ReportDirectory $reportDirectoryName -IsMultiModule (!$singlemodule) -ErrorAction Stop
    Write-Verbose "Code coverage is successfully enabled." -Verbose
 }
 else
@@ -120,14 +138,7 @@ else
 
 if($isCoverageEnabled)
 {
-	if($singlemodule)
-	{
-		$arguments = "$options $tasks jacocoTestReport"
-	}
-	else
-	{
-		$arguments = "$options $tasks jacocoRootReport"
-	}
+    $arguments = "$options $tasks $reportingTaskName"
 }
 else
 {
@@ -151,7 +162,14 @@ if($publishJUnitResultsFromAntBuild)
     else
     {
         Write-Verbose "Calling Publish-TestResults"
-        Publish-TestResults -TestRunner "JUnit" -TestResultsFiles $matchingTestResultsFiles -Context $distributedTaskContext -RunTitle $testRunTitle
+         if([string]::IsNullOrWhiteSpace($testRunTitle))
+		{
+			Publish-TestResults -TestRunner "JUnit" -TestResultsFiles $matchingTestResultsFiles -Context $distributedTaskContext
+		}
+		else
+		{
+			Publish-TestResults -TestRunner "JUnit" -TestResultsFiles $matchingTestResultsFiles -Context $distributedTaskContext -RunTitle $testRunTitle
+		}
     }    
 }
 else

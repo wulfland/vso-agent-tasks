@@ -28,7 +28,7 @@ Write-Verbose "goals = $goals"
 Write-Verbose "publishJUnitResults = $publishJUnitResults"
 Write-Verbose "testResultsFiles = $testResultsFiles"
 
-$isCoverageEnabled = !$codeCoverageTool.equals("None")
+$isCoverageEnabled = !($codeCoverageTool -eq "None")
 if($isCoverageEnabled -eq $true)
 {
     Write-Verbose "codeCoverageTool = $codeCoverageTool" -Verbose
@@ -91,14 +91,21 @@ Write-Host "Running Maven..."
 Invoke-Maven -MavenPomFile $mavenPOMFile -Options $options -Goals $goals 
 
 # Publish test results
-PublishTestResults $publishJUnitResults $testResultsFiles $testRunTitle
+if([string]::IsNullOrWhiteSpace($testRunTitle))
+{
+	PublishTestResults $publishJUnitResults $testResultsFiles
+}
+else
+{
+	PublishTestResults $publishJUnitResults $testResultsFiles $testRunTitle		
+}
 
-if ($codeCoverageTool.equals("JaCoCo"))
+if ($codeCoverageTool -eq "JaCoCo")
 {
 	# Publish code coverage for Jacoco
 	PublishCodeCoverageJacoco  $isCoverageEnabled $mavenPOMFile $CCReportTask $summaryFileJacoco $reportDirectory $codeCoverageTool $reportPOMFile
 }
-ElseIf ($codeCoverageTool.equals("Cobertura"))
+ElseIf ($codeCoverageTool -eq "Cobertura")
 {
 	# Publish code coverage for Jacoco
 	PublishCodeCoverageCobertura  $isCoverageEnabled $mavenPOMFile $summaryFileCobertura $reportDirectoryCobertura $codeCoverageTool
