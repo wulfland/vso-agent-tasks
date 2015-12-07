@@ -1,4 +1,6 @@
-﻿function Get-TestAgentType([string] $Version)
+﻿Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
+
+function Get-TestAgentType([string] $Version)
 {
 	$Version = Locate-TestVersion
 	$testAgentPath = "HKLM:\SOFTWARE\Microsoft\VisualStudio\{0}\EnterpriseTools\QualityTools\Agent" -f $Version
@@ -68,7 +70,7 @@ function Locate-TestVersionAndVsRoot([string] $Version)
     if (-not $installRoot)
     {
         # We still got nothing
-        throw "Unable to find TestAgent installation path"
+        throw (Get-LocalizedString -Key "Unable to find TestAgent installation path")
     }
     return $installRoot
 }
@@ -280,7 +282,7 @@ function Set-TestAgentConfiguration
     {
         if (-not $configAsProcess)
         {
-            throw "EnableAutoLogon option is not valid for configureAsService."
+            throw (Get-LocalizedString -Key "DisableScreenSaver option is not valid for configureAsService.")
         }
 
         $yesno = GetBoolAsYesNo($EnableAutoLogon)
@@ -291,7 +293,7 @@ function Set-TestAgentConfiguration
     {
         if (-not $configAsProcess)
         {
-            throw "DisableScreenSaver option is not valid for configureAsService."
+            throw (Get-LocalizedString -Key "DisableScreenSaver option is not valid for configureAsService.")
         }
 
         $yesno = GetBoolAsYesNo($DisableScreenSaver)
@@ -759,7 +761,7 @@ function InvokeDTAExecHostExe([string] $Version, [System.Management.Automation.P
     $vsRoot = Locate-TestVersionAndVsRoot($Version)
     if ([string]::IsNullOrWhiteSpace($vsRoot))
     {
-        throw "Could not locate TestAgent installation directory for `$Version=$Version. Ensure that TestAgent is installed."
+        throw (Get-LocalizedString -Key "Could not locate TestAgent installation directory for `$Version={0}. Ensure that TestAgent is installed." -f $Version)
     }
     
     $exePath = Join-Path -Path $vsRoot -ChildPath $ExeName
@@ -838,13 +840,13 @@ function InvokeTestAgentConfigExe([string[]] $Arguments, [string] $Version, [Sys
     $ExeName = "TestAgentConfig.exe"
     if (-not (Test-IsAdmin))
     {
-        throw "You need to be an Administrator to run this tool."
+        throw (Get-LocalizedString -Key "You need to be an Administrator to run this tool.")
     }
 
     $vsRoot = Locate-TestVersionAndVsRoot($Version)
     if ([string]::IsNullOrWhiteSpace($vsRoot))
     {
-        throw "Could not locate TestAgent installation directory for `$Version=$Version. Ensure that TestAgent is installed."
+        throw (Get-LocalizedString -Key "Could not locate TestAgent installation directory for `$Version={0}. Ensure that TestAgent is installed." -f $Version)
     }
 
     $exePath = Join-Path -Path $vsRoot -ChildPath $ExeName
@@ -878,7 +880,7 @@ function InvokeTestAgentConfigExe([string[]] $Arguments, [string] $Version, [Sys
         return $out
     }
 
-    throw "Did not find TestAgentConfig.exe at : $exePath. Ensure that TestAgent is installed."
+    throw (Get-LocalizedString -Key "Did not find TestAgentConfig.exe at : {0}. Ensure that TestAgent is installed." -f $exePath)
 }
 
 function ConfigureTestAgent
@@ -928,7 +930,7 @@ function ConfigureTestAgent
     }
     else
     {
-        throw ("TestAgent Configuration failed with exit code {0}. Error code : {1}" -f $LASTEXITCODE, $retCode)
+        throw (Get-LocalizedString -Key "TestAgent Configuration failed with exit code {0}. Error code : {1}" -f $LASTEXITCODE $retCode)
     }
 
     return $retCode;
