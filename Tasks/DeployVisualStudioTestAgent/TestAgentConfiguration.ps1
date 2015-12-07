@@ -1,5 +1,3 @@
-﻿Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
-
 function Get-TestAgentType([string] $Version)
 {
 	$Version = Locate-TestVersion

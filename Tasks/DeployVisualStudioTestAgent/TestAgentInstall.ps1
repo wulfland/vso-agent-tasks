@@ -1,5 +1,3 @@
-Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
-
 function Install-Product($SetupPath, $UserName, $Password, $ProductVersion, $Arguments)
 {
 	$InstalledCheckRegKey = ("SOFTWARE\Microsoft\DevDiv\vstf\Servicing\{0}\testagentcore" -f $ProductVersion)

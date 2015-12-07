@@ -2,8 +2,6 @@
 # $sourcePath is the semi colon seperated set of  paths from which the test agent/msi is to be downloaded or copied.
 # $destinationPath is the semi colon seperated set of location to which the test agent/msi will be downloaded or copied.
 
-Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
-
 # Validate that the given source path exists and is not a directory.
 function ValidateSourceFile([string] $sourcePath)
 {

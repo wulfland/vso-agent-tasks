@@ -1,5 +1,3 @@
-﻿Import-Module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
-
 function Locate-TestVersionAndVsRoot([string] $Version)
 {
     if ([string]::IsNullOrWhiteSpace($Version))
