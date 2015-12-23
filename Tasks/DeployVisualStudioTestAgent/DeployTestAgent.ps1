@@ -72,7 +72,12 @@ if($resourceFilteringMethod -eq "tags")
 }
 else
 {
-    Invoke-DeployTestAgent -MachineNames $testMachines -UserName $machineUserName -Password $machinePassword -PowerShellPort 5985 -TestMachineGroup $testMachineGroup -RunAsProcess $runAsProcess -LogonAutomatically $logonAutomatically -DisableScreenSaver $disableScreenSaver -AgentLocation $agentLocation -UpdateTestAgent $updateTestAgent -InstallAgentScriptLocation $installAgentScriptLocation -ConfigureTestAgentScriptLocation $configureTestAgentScriptLocation -CheckAgentInstallationScriptLocation $checkAgentInstallationScriptLocation -downloadTestAgentScriptLocation $downloadTestAgentScriptLocation -Connection $connection -PersonalAccessToken $personalAccessToken -DataCollectionOnly $isDataCollectionOnly
+    Write-Verbose "Calling Register Environment cmdlet"
+    # Environment name = input machine text
+    $environment = Register-Environment -EnvironmentName $testMachineGroup -EnvironmentSpecification $testMachineGroup -UserName $environmentUserName -Password $envrionmentPassword  -TestCertificate ($testCertificate -eq "true") -Connection $connection -TaskContext $distributedTaskContext
+    Write-Verbose "Environment details $environment"
+    
+    Invoke-DeployTestAgent -MachineEnvironment $environment -UserName $machineUserName -Password $machinePassword -MachineNames $testMachineGroup -RunAsProcess $runAsProcess -LogonAutomatically $logonAutomatically -DisableScreenSaver $disableScreenSaver -AgentLocation $agentLocation -UpdateTestAgent $updateTestAgent -InstallAgentScriptLocation $installAgentScriptLocation -ConfigureTestAgentScriptLocation $configureTestAgentScriptLocation -CheckAgentInstallationScriptLocation $checkAgentInstallationScriptLocation -downloadTestAgentScriptLocation $downloadTestAgentScriptLocation -Connection $connection -PersonalAccessToken $personalAccessToken -DataCollectionOnly $isDataCollectionOnly
 }
 
 Write-Verbose "Leaving script DeployTestAgent.ps1"
