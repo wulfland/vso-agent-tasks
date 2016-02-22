@@ -1,6 +1,6 @@
 {
-  "id": "2A7EBC54-C13E-490E-81A5-D7561AB7CD97",
-  "name": "PublishCodeCoverageResults",
+  "id": "2A7EBC54-C13E-490E-81A5-D7561AB7CD98",
+  "name": "PublishCodeCoverageResultsCustomTask",
   "friendlyName": "ms-resource:loc.friendlyName",
   "description": "ms-resource:loc.description",
   "helpMarkDown": "ms-resource:loc.helpMarkDown",
@@ -60,6 +60,10 @@
       "target": "$(currentDirectory)\\PublishCodeCoverageResults.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"
+    },
+    "Node": {
+      "target": "publishCodeCoverageResults.js",
+      "argumentFormat": ""
     }
   }
 }

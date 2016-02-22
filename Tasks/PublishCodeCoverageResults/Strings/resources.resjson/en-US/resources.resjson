@@ -1,5 +1,5 @@
 {
-  "loc.friendlyName": "Publish Code Coverage Results",
+  "loc.friendlyName": "Publish Code Coverage Results CustomTask",
   "loc.helpMarkDown": "[More Information](http://go.microsoft.com/fwlink/?LinkID=626485)",
   "loc.description": "Publish code coverage results to VSTS/TFS",
   "loc.instanceNameFormat": "Publish Code Coverage Results $(summaryFileLocation)",
