@@ -69,8 +69,11 @@
   ],
   "instanceNameFormat": "ms-resource:loc.instanceNameFormat",
   "execution": {
+    "PowerShell3": {
+      "target": "AzurePowerShell.ps1"
+    },
     "AzurePowerShell": {
-      "target": "$(currentDirectory)\\RunAzurePowerShell.ps1",
+      "target": "$(currentDirectory)\\AzurePowerShell-Legacy.ps1",
       "argumentFormat": "",
       "workingDirectory": "$(currentDirectory)"
     }
