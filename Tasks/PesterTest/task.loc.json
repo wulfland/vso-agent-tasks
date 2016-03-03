@@ -1,0 +1,73 @@
+{
+  "id": "1EC82E33-2CB5-4B73-B37F-C8529A7972B4",
+  "name": "PesterTest",
+  "friendlyName": "ms-resource:loc.friendlyName",
+  "description": "ms-resource:loc.description",
+  "helpMarkDown": "ms-resource:loc.helpMarkDown",
+  "category": "Test",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "author": "Microsoft Corporation",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "minimumAgentVersion": "1.92.0",
+  "groups": [
+    {
+      "name": "executionOptions",
+      "displayName": "ms-resource:loc.group.displayName.executionOptions",
+      "isExpanded": true
+    },
+    {
+      "name": "reportingOptions",
+      "displayName": "ms-resource:loc.group.displayName.reportingOptions",
+      "isExpanded": false
+    }
+  ],
+  "inputs": [
+    {
+      "name": "WorkingFolder",
+      "type": "filePath",
+      "label": "ms-resource:loc.input.label.WorkingFolder",
+      "defaultValue": "$(Build.SourceDirectory)",
+      "required": true,
+      "helpMarkDown": "ms-resource:loc.input.help.WorkingFolder"
+    },
+    {
+      "name": "script",
+      "type": "string",
+      "label": "ms-resource:loc.input.label.script",
+      "defaultValue": "**\\*.test.ps1",
+      "required": true,
+      "helpMarkDown": "ms-resource:loc.input.help.script"
+    },
+    {
+      "name": "codeCoverage",
+      "type": "string",
+      "label": "ms-resource:loc.input.label.codeCoverage",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "ms-resource:loc.input.help.codeCoverage"
+    },
+    {
+      "name": "OutputFile",
+      "type": "filePath",
+      "label": "ms-resource:loc.input.label.OutputFile",
+      "required": true,
+      "defaultValue": "$(Build.SourceDirectory)\\Test-pester-results.xml",
+      "helpMarkDown": "ms-resource:loc.input.help.OutputFile"
+    }
+  ],
+  "instanceNameFormat": "ms-resource:loc.instanceNameFormat",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\RunPesterTests.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "loc.friendlyName": "Run PowerShell Pester tests",
+  "loc.helpMarkDown": "[More Information](http://go.microsoft.com/fwlink/?linkid=???)",
+  "loc.description": "Run PowerShell tests with Pester in your build or Release.",
+  "loc.instanceNameFormat": "Run Pester Tests",
+  "loc.group.displayName.executionOptions": "Execution Options",
+  "loc.group.displayName.reportingOptions": "Reporting Options",
+  "loc.input.label.WorkingFolder": "WorkingFolder",
+  "loc.input.help.WorkingFolder": "The root where to look for the files.",
+  "loc.input.label.script": "Scripts",
+  "loc.input.help.script": "Individual test files or folders separated by ';'.  Wildcards can be used.  For example, `**\\*test*.ps1;-:**\\tests\\**` ",
+  "loc.input.label.codeCoverage": "CodeCoverage",
+  "loc.input.help.codeCoverage": "Individual files that are analysed for code coverage seperated by ';'.  Wildcards can be used.  For example, `**\\*ps1;-:**\\scripts\\**` ",
+  "loc.input.label.OutputFile": "OutputFile",
+  "loc.input.help.OutputFile": "The output file where you want to store the test results. Use the 'Publish Test results task' to promote the results to the build."
+}

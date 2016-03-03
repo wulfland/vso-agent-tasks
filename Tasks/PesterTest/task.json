@@ -1,0 +1,73 @@
+{
+  "id": "1EC82E33-2CB5-4B73-B37F-C8529A7972B4",
+  "name": "PesterTest",
+  "friendlyName": "Run PowerShell Pester tests",
+  "description": "Run PowerShell tests with Pester in your build or Release.",
+  "helpMarkDown": "[More Information](http://go.microsoft.com/fwlink/?linkid=???)",
+  "category": "Test",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "author": "Microsoft Corporation",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "minimumAgentVersion": "1.92.0",
+  "groups": [
+        {
+            "name": "executionOptions",
+            "displayName": "Execution Options",
+            "isExpanded": true
+        },
+        {
+            "name": "reportingOptions",
+            "displayName": "Reporting Options",
+            "isExpanded": false
+        }
+    ],
+  "inputs": [
+    {
+      "name": "WorkingFolder",
+      "type": "filePath",
+      "label": "WorkingFolder",
+      "defaultValue": "$(Build.SourceDirectory)",
+      "required": true,
+      "helpMarkDown": "The root where to look for the files."
+    },
+    {
+      "name": "script",
+      "type": "string",
+      "label": "Scripts",
+      "defaultValue": "**\\*.test.ps1",
+      "required": true,
+      "helpMarkDown": "Individual test files or folders separated by ';'.  Wildcards can be used.  For example, `**\\*test*.ps1;-:**\\tests\\**` "
+    },
+    {
+      "name": "codeCoverage",
+      "type": "string",
+      "label": "CodeCoverage",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Individual files that are analysed for code coverage seperated by ';'.  Wildcards can be used.  For example, `**\\*ps1;-:**\\scripts\\**` "
+    },
+    {
+      "name": "OutputFile",
+      "type": "filePath",
+      "label": "OutputFile",
+      "required": true,
+      "defaultValue": "$(Build.SourceDirectory)\\Test-pester-results.xml",
+      "helpMarkDown": "The output file where you want to store the test results. Use the 'Publish Test results task' to promote the results to the build."
+    }
+  ],
+  "instanceNameFormat": "Run Pester Tests",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\RunPesterTests.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}
